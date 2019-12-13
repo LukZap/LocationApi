@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace LocationApi.Controllers
+namespace LocationApi.ViewModels
 {
-    public class ValuesController
+    public class GeolocationViewModel
     {
     }
 }
