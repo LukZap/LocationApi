@@ -1,5 +1,7 @@
 using Autofac;
 using Autofac.Integration.WebApi;
+using AutoMapper;
+using LocationApi.Mappings;
 using LocationApi.Models;
 using LocationApi.Services;
 using LocationApi.Settings;
@@ -36,6 +38,15 @@ namespace LocationApi
                 var client = new MongoClient(mongoDbSettings.ConnectionString);
                 return client.GetDatabase(mongoDbSettings.DatabaseName);
             }).As<IMongoDatabase>();
+
+            //register mappings
+            builder.Register(_ => new MapperConfiguration(cfg => {
+                cfg.AddProfile<GeolocationViewModelProfile>();
+            }))
+                .As<IConfigurationProvider>()
+                .SingleInstance();
+            builder.Register(c => c.Resolve<IConfigurationProvider>().CreateMapper())
+                .As<IMapper>();
 
             var container = builder.Build();
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);

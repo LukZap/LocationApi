@@ -1,4 +1,5 @@
 ﻿using LocationApi.Models;
+using LocationApi.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace LocationApi.Services
 {
     public interface IGeolocationService
     {
-        IEnumerable<Geolocation> GetGeolocations();
+        Task<GeolocationViewModel> GetGeolocationAsync(string locationQuery);
+        Task<GeolocationViewModel> AddGeolocationAsync(GeolocationViewModel viewModel);
+        Task<GeolocationViewModel> UpdateGeolocationAsync(string id, GeolocationViewModel viewModel);
+        Task DeleteGeolocationAsync(string id);
     }
 }

@@ -3,6 +3,7 @@ using LocationApi.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -17,27 +18,58 @@ namespace LocationApi.Controllers
             this.geolocationService = geolocationService;
         }
 
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get([FromUri]string q)
         {
-            var result = geolocationService.GetGeolocations();
-            return Ok( result );
+            var result = await geolocationService.GetGeolocationAsync(q);
+            if (result is null)
+                return NotFound();
+            return Ok(result);
         }
 
-        public IHttpActionResult Get(int id)
+        public async Task<IHttpActionResult> Post([FromBody]GeolocationViewModel viewModel)
         {
-            return Ok(new Models.Geolocation() {  });
+            try
+            {
+                var result = await geolocationService.AddGeolocationAsync(viewModel);
+                return Ok(result);
+            }
+            catch (Exception e) // exception filter?
+            {
+                return InternalServerError(e);
+            }
         }
 
-        public void Post([FromBody]string value)
+        public async Task<IHttpActionResult> Put([FromUri]string id,
+            [FromBody]GeolocationViewModel viewModel)
         {
+            if (id == null)
+                return BadRequest("Id of geolocation to update cannot be null.");
+
+            try
+            {
+                var result = await geolocationService.UpdateGeolocationAsync(id, viewModel);
+                return Ok(result);
+            }
+            catch (Exception e)  // exception filter?
+            {
+                return InternalServerError(e);
+            }
         }
 
-        public void Put(int id, [FromBody]string value)
+        public async Task<IHttpActionResult> Delete([FromUri]string id)
         {
-        }
+            if (id == null)
+                return BadRequest("Id of geolocation to delete cannot be null.");
 
-        public void Delete(int id)
-        {
+            try
+            {
+                await geolocationService.DeleteGeolocationAsync(id);
+                return Ok(id);
+            }
+            catch (Exception e)  // exception filter?
+            {
+                return InternalServerError(e);
+            }
         }
     }
 }
