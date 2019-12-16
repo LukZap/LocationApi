@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Integration.WebApi;
 using AutoMapper;
+using LocationApi.Exceptions;
 using LocationApi.Mappings;
 using LocationApi.Models;
 using LocationApi.Services;
@@ -24,24 +25,25 @@ namespace LocationApi
             var builder = new ContainerBuilder();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configuration.Filters.Add(
+                new LocationApiExceptionFilterAttribute());
             var config = GlobalConfiguration.Configuration;
 
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterWebApiFilterProvider(config); // todo dodaæ exception filter
-            builder.RegisterWebApiModelBinderProvider(); // spr
+            builder.RegisterWebApiFilterProvider(config); 
+            builder.RegisterWebApiModelBinderProvider(); 
 
             // register services
             builder.RegisterType<GeolocationService>().As<IGeolocationService>();
             builder.Register(_ => _createLocationDbSettings()).As<ILocationDbSettings>().SingleInstance();
             builder.Register(c => {
                 var mongoDbSettings = c.Resolve<ILocationDbSettings>();
-                var client = new MongoClient(mongoDbSettings.ConnectionString);
-                return client.GetDatabase(mongoDbSettings.DatabaseName);
-            }).As<IMongoDatabase>();
+                return new MongoClient(mongoDbSettings.ConnectionString);
+            }).As<IMongoClient>().SingleInstance();
 
             //register mappings
             builder.Register(_ => new MapperConfiguration(cfg => {
-                cfg.AddProfile<GeolocationViewModelProfile>();
+                cfg.AddProfile<GeolocationViewModelMappingProfile>();
             }))
                 .As<IConfigurationProvider>()
                 .SingleInstance();

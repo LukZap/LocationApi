@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation.WebApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -16,6 +17,8 @@ namespace LocationApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            FluentValidationModelValidatorProvider.Configure(config);
         }
     }
 }

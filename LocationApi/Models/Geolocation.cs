@@ -1,6 +1,8 @@
 ﻿using LocationApi.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,18 +18,22 @@ namespace LocationApi.Models
 
         public string Url { get; set; }
 
-        public string IP { get; set; } 
+        public string IP { get; set; }
 
-        public IPType? IPType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [BsonRepresentation(BsonType.String)]
+        public IPType IPType { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
+        [BsonRepresentation(BsonType.String)]
         public Continent Continent { get; set; }
 
         public string Country { get; set; }
 
         public string City { get; set; }
 
-        public decimal Lat { get; set; }
+        public double Lat { get; set; }
 
-        public decimal Lng { get; set; }
+        public double Lng { get; set; }
     }
 }

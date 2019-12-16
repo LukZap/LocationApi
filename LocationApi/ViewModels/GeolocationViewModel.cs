@@ -1,10 +1,13 @@
-﻿using System;
+﻿using FluentValidation.Attributes;
+using LocationApi.Validators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace LocationApi.ViewModels
 {
+    [Validator(typeof(GeolocationViewModelValidator))]
     public class GeolocationViewModel
     {
         public string Id { get; set; }
@@ -21,8 +24,8 @@ namespace LocationApi.ViewModels
 
         public string City { get; set; }
 
-        public decimal Lat { get; set; }
+        public double Lat { get; set; }
 
-        public decimal Lng { get; set; }
+        public double Lng { get; set; }
     }
 }
