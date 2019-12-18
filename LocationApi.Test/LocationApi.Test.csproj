@@ -154,7 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fixtures\GeolocationControllerFixture.cs" />
+    <Compile Include="Fixtures\GeolocationViewModelValidatorFixture.cs" />
     <Compile Include="Fixtures\MongoDbFixture.cs" />
+    <Compile Include="GeolocationViewModelValidatorTest.cs" />
     <Compile Include="LocationApiIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

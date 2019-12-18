@@ -11,10 +11,13 @@ namespace LocationApi.Helpers
     {
         public static bool TryParseIPAddress(string ipString, out IPAddress ip)
         {
+            ip = null;
+            if (string.IsNullOrWhiteSpace(ipString))
+                return false;
+
             if (ipString.Contains('.') || ipString.Contains(':'))
                 return IPAddress.TryParse(ipString, out ip);
-            else
-                ip = null;
+
             return false;
         }
 
