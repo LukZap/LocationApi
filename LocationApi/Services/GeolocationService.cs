@@ -80,7 +80,6 @@ namespace LocationApi.Services
             await geolocations.DeleteOneAsync(g => g.Id == id);
         }
 
-        // write TESTS 
         private async Task ValidateAndUpdateGeolocationBeforeDbAsync(Geolocation geo)
         {
             if (!string.IsNullOrWhiteSpace(geo.IP))

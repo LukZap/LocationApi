@@ -21,8 +21,8 @@ namespace LocationApi.Test.Fixtures
 {
     public class GeolocationControllerFixture : IDisposable
     {
-        private readonly MongoDbFixture _dbFixture;
-        private readonly ILifetimeScope _scope;
+        private readonly MongoDbFixture dbFixture;
+        private readonly ILifetimeScope scope;
 
         public GeolocationController Controller { get; }
         public IMongoCollection<Geolocation> GeolocationsCollection { get; }
@@ -30,8 +30,8 @@ namespace LocationApi.Test.Fixtures
 
         public GeolocationControllerFixture()
         {
-            _dbFixture = new MongoDbFixture();
-            GeolocationsCollection = _dbFixture.Collection;
+            dbFixture = new MongoDbFixture();
+            GeolocationsCollection = dbFixture.Collection;
 
             var builder = new ContainerBuilder();
 
@@ -42,8 +42,8 @@ namespace LocationApi.Test.Fixtures
             builder.RegisterType<GeolocationController>().AsSelf().SingleInstance();
             // register services
             builder.RegisterType<GeolocationService>().As<IGeolocationService>();
-            builder.Register(_ => _createLocationDbSettings()).As<ILocationDbSettings>().SingleInstance();
-            builder.Register(_ => _dbFixture.MongoClient).As<IMongoClient>().SingleInstance();
+            builder.Register(_ => dbFixture.MongoDbSettings).As<ILocationDbSettings>().SingleInstance();
+            builder.Register(_ => dbFixture.MongoClient).As<IMongoClient>().SingleInstance();
 
             //register mappings
             builder.Register(_ => new MapperConfiguration(cfg => {
@@ -55,10 +55,10 @@ namespace LocationApi.Test.Fixtures
                 .As<IMapper>();
             var container = builder.Build();
 
-            _scope = container.BeginLifetimeScope();
+            scope = container.BeginLifetimeScope();
             try
             {
-                Controller = _scope.Resolve<GeolocationController>();
+                Controller = scope.Resolve<GeolocationController>();
             }
             catch (Exception)
             {
@@ -69,17 +69,8 @@ namespace LocationApi.Test.Fixtures
 
         public void Dispose()
         {
-            _dbFixture.Dispose();
-            _scope.Dispose();
-        }
-
-        private ILocationDbSettings _createLocationDbSettings()
-        {
-            return new LocationDbSettings
-            {
-                GeolocationsCollection = ConfigurationManager.AppSettings["GeolocationsCollection"],
-                DatabaseName = ConfigurationManager.AppSettings["DatabaseName"]
-            };
+            dbFixture.Dispose();
+            scope.Dispose();
         }
     }
 }
