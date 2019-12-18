@@ -1,0 +1,39 @@
+{
+  "collMod": "TestGeolocations",
+  "validator": {
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": [ "IP", "IPType", "Continent", "Country", "City", "Lat", "Lng" ],
+      "properties": {
+        "phone": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "IPType": {
+          "enum": [ "IPv4", "IPv6" ],
+          "description": "can only be one of the enum values and is required"
+        },
+        "Continent": {
+          "enum": [ "Europe", "Asia", "Australia", "Africa", "SouthAmerica", "NorthAmerica" ],
+          "description": "can only be one of the enum values and is required"
+        },
+        "Country": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "City": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "Lat": {
+          "bsonType": "double",
+          "description": "can only be double and is required"
+        },
+        "Lng": {
+          "bsonType": "double",
+          "description": "can only be double and is required"
+        }
+      }
+    }
+  }
+}
