@@ -1,11 +1,8 @@
-FROM microsoft/aspnet
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019
 
-ADD scripts/installChoco.ps1 /installChoco.ps1
-RUN powershell .\installChoco.ps1 -Wait; Remove-Item c:\installChoco.ps1 -Force;
+RUN powershell Set-ExecutionPolicy Bypass -Scope Process -Force; `
+  iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 RUN choco install mongodb
 
-WORKDIR /app
-COPY .LocationApi/bin .
-
-ENTRYPOINT ["dotnet", "LocationApi.dll"]
+COPY C:/Users/mar_m/Desktop/WebSite/ /inetpub/wwwroot
