@@ -131,3 +131,4 @@ Returns deleted geolocation Id.
 - fix resoving URLs with more meaningful results - not like "waw.pl"
 - true integration tests - not controller tests (problems with self-hosting)
 - advanced validations of request based on geolocations
+- add Swagger
