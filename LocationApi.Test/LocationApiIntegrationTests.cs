@@ -11,7 +11,6 @@ using Xunit;
 
 namespace LocationApi.Test
 {
-
     public class LocationApiIntegrationTests : IClassFixture<GeolocationControllerFixture>
     {
         private readonly GeolocationController controller;

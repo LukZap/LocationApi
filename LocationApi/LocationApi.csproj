@@ -168,10 +168,6 @@
     <Compile Include="ViewModels\GeolocationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dockerfile" />
-    <None Include=".dockerignore">
-      <DependentUpon>Dockerfile</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
